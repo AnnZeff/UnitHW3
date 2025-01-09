@@ -56,7 +56,7 @@ public class CardOrderTest {
     }
 
     @Test
-    void shouldValidateName() {
+    void shouldValidateName1() {
         driver.get("http://localhost:9999");
         WebElement findElement = driver.findElement(By.cssSelector("form"));
         findElement.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Ivanov Ivan");
@@ -68,7 +68,20 @@ public class CardOrderTest {
         assertEquals("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы.",resultElement.getText().trim());
     }
     @Test
-    void shouldValidatePhoneNomber() {
+    void shouldValidateName2() {
+        driver.get("http://localhost:9999");
+        WebElement findElement = driver.findElement(By.cssSelector("form"));
+        findElement.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("");
+        findElement.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("+79991234567");
+        driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
+        driver.findElement(By.cssSelector("[role='button']")).click();
+        WebElement resultElement = driver.findElement(By.cssSelector("[data-test-id='name'].input_invalid .input__sub"));
+        assertTrue(resultElement.isDisplayed());
+        assertEquals("Поле обязательно для заполнения",resultElement.getText().trim());
+    }
+
+    @Test
+    void shouldValidatePhoneNomber1() {
         driver.get("http://localhost:9999");
         WebElement findElement = driver.findElement(By.cssSelector("form"));
         findElement.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов Иван");
@@ -79,6 +92,20 @@ public class CardOrderTest {
         assertTrue(resultElement.isDisplayed());
         assertEquals("Поле обязательно для заполнения",resultElement.getText().trim());
     }
+
+    @Test
+    void shouldValidatePhoneNomber2() {
+        driver.get("http://localhost:9999");
+        WebElement findElement = driver.findElement(By.cssSelector("form"));
+        findElement.findElement(By.cssSelector("[data-test-id='name'] input")).sendKeys("Иванов Иван");
+        findElement.findElement(By.cssSelector("[data-test-id='phone'] input")).sendKeys("#79991234567");
+        driver.findElement(By.cssSelector("[data-test-id='agreement']")).click();
+        driver.findElement(By.cssSelector("[role='button']")).click();
+        WebElement resultElement = driver.findElement(By.cssSelector("[data-test-id='phone'].input_invalid .input__sub"));
+        assertTrue(resultElement.isDisplayed());
+        assertEquals("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678.",resultElement.getText().trim());
+    }
+
 
     @Test
     void shouldValidateCheckBox() {
